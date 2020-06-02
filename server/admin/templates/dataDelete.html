@@ -1,0 +1,28 @@
+{% extends '_layout.html' %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>data Delete</title>
+    
+</head>
+<body>
+    {% block content %}
+    <form method="POST" action="{{url_for('admin.dataDelete')}}" >
+        <div>
+            <label for="name">University Name</label>
+            <input type="text" id='name' name='name' placeholder="Enter university name">
+        </div>
+    <button type="submit" class="btn btn-primary">Delete</button>
+    </form>
+    {% if msg %}
+    {{msg}}
+    {% endif %}
+    {% endblock %}
+</body>
+</html>
+

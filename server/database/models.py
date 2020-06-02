@@ -14,13 +14,6 @@ session = sessionmaker(bind=engine)()
 
 
 class User(Base):
-    # def __init__(self, email, firstName, middleName, lastName, phone):
-    #     self.email = email
-    #     self.firstName = firstName
-    #     self.middleName = middleName
-    #     self.lastName = lastName
-    #     self.phone = phone
-
     __tablename__ = 'vcusers'
 
     UserEmail = Column(String(50), primary_key=True)
@@ -44,14 +37,8 @@ class User(Base):
     def __repr__(self):
         return "<User(email='%s')>" % (self.email)
 
+
 class Admin(Base):
-    def __init__(self, email, name, password):
-        self.AdminEmail = email
-        # self.AdminName = name
-        # self.AdminPassword = password
-        # self.JoiningDT = joindt
-
-
     __tablename__ = 'vcadmin'
 
     AdminEmail = Column(String(50), primary_key=True)
@@ -63,6 +50,7 @@ class Admin(Base):
     def __repr__(self):
         return "<User(email='%s')>" % (self.email)
 
+
 class UniversityData(Base):
     __tablename__ = 'universitydata'
 
@@ -73,6 +61,7 @@ class UniversityData(Base):
     UniversityType = Column(String(70), nullable=False)
     CreateDT = Column(DateTime, default=datetime.datetime.utcnow)
 
+
 class Channel(Base):
     __tablename__ = 'channel'
 
@@ -80,11 +69,13 @@ class Channel(Base):
     FromProgramID = Column(Integer, nullable=False)
     ToProgramID = Column(Integer, nullable=False)
 
+
 class Course(Base):
     __tablename__ = 'courses'
 
     CourseID = Column(Integer, primary_key=True)
     CourseName = Column(String(50), nullable=False)
+
 
 class Stream(Base):
     __tablename__ = 'streams'
@@ -99,18 +90,8 @@ class Program(Base):
     CourseID = Column(Integer, nullable=False)
     StreamID = Column(Integer, nullable=False)
 
-# * Models declaration ends
-# endregion
-
 
 def main():
-    # email = Admin("dhibjbd@sdii", "shiva", 'kumar')
-    # print("=-=------------------")
-    # print(repr(email))
-    # print("=-=------------------")
-
-    # session.add(email)
-    # session.commit()
     Base.metadata.create_all(engine)
 
 
