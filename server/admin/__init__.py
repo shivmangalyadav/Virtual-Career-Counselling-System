@@ -3,12 +3,13 @@ from jinja2 import TemplateNotFound
 from flask import Flask, render_template, request, redirect, url_for, session
 from sqlalchemy.orm import Session
 from cryptography.fernet import Fernet
-from admin.database import engine, Base, User
+from database import engine, Base, User
 import os
 import collections
 
-import admin.database as db
+from database import AdminUniversity
 
+university = AdminUniversity()
 
 Admin = Blueprint('admin', __name__, template_folder=os.path.join(os.getcwd(), 'admin'))
 
@@ -69,7 +70,7 @@ def dataDelete():
         if request.method == 'POST':
             name = request.form['name']
 
-            if(db.delete_data(name)):
+            if(university.delete_data(name)):
                 msg = "university deleted successfully"
             else:
                 msg = "University not exists!"
@@ -92,11 +93,11 @@ def dataUpload():
         states = []
         msg = ''
 
-        University_type = db.fetch_univeristy_type()   
+        University_type = university.fetch_univeristy_type()   
         for dt in University_type:
             universitytype.append(dt['UniversityType'])
 
-        state_names = db.fetch_state()
+        state_names = university.fetch_state()
         for st in state_names:
             result = st["State"].find("-")
             if result != -1:
@@ -118,7 +119,7 @@ def dataUpload():
             # print(state)
             # print(Utype)
         
-            if (db.submit_university_data(name, address, state, Utype)):
+            if (university.submit_university_data(name, address, state, Utype)):
                 msg = "University added successfully"
             else:
                 msg = "Try Again!"

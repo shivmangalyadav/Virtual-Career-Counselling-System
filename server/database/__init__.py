@@ -3,10 +3,15 @@ DAL: Database Abstraction Layer
 """
 
 from .models import User
+from sqlalchemy import create_engine
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.orm import Session
+from cryptography.fernet import Fernet
 import pymysql
-import itertools
-import pandas as pd
+import datetime
 
+engine = create_engine(
+    'mysql+pymysql://root:Shivam123@localhost:3306/virtual_counselling_system')
 
 conn = pymysql.connect(
     'localhost',
@@ -14,7 +19,11 @@ conn = pymysql.connect(
     'Shivam123',
     'virtual_counselling_system'
 )
+cur = conn.cursor()
 
+Base = automap_base()
+Base.prepare(engine, reflect = True)
+User = Base.classes.vcadmin
 
 def user_signup(user: User) -> bool:
     pass
@@ -32,37 +41,38 @@ def users_list() -> list:
 
 class Course:
     def __init__(self):
-        self.cur = conn.cursor()
+        pass
 
     def course_data(self):
         
         sql = """SELECT * FROM courses """
-        self.cur.execute(sql)
-        courses = self.cur.fetchall()
+        cur.execute(sql)
+        courses = cur.fetchall()
+        cur.close()
 
         return courses
 
-        # cur.close()
-        # conn.close
 
     def stream_data(self, cid):
         sql = """ SELECT StreamID FROM programs WHERE CourseID=%s """
-        self.cur.execute(sql, cid)
-        streams = self.cur.fetchall()
+        cur.execute(sql, cid)
+        streams = cur.fetchall()
 
         streams_data = []
         sql = """ SELECT * FROM streams WHERE StreamID=%s """
         for i in streams:
-            self.cur.execute(sql, i)
-            streams_data.append(self.cur.fetchone())
+            cur.execute(sql, i)
+            streams_data.append(cur.fetchone())
+        cur.close()
 
         return streams_data
 
 
     def program_data(self, cid, sid):
         sql = """ SELECT ProgramID, c.CourseID, CourseName, s.StreamID , StreamName FROM courses c inner join programs p on c.CourseID = p.CourseID inner join streams s on p.StreamID = s.StreamID WHERE c.CourseId=%s and s.StreamId=%s """
-        self.cur.execute(sql, (cid, sid))
-        data = self.cur.fetchall()
+        cur.execute(sql, (cid, sid))
+        data = cur.fetchall()
+        cur.close()
 
         return data
 
@@ -78,8 +88,9 @@ class Course:
                 WHERE p.ProgramID=%s
             """
         
-        self.cur.execute(sql, pid)
-        c_data = self.cur.fetchall()
+        cur.execute(sql, pid)
+        c_data = cur.fetchall()
+        cur.close()
 
         return c_data
 
@@ -95,8 +106,61 @@ class Course:
                 WHERE p.ProgramID=%s and c.ChannelID = %s
             """
         
-        self.cur.execute(sql, (pid, chid))
-        c_data = self.cur.fetchall()
+        cur.execute(sql, (pid, chid))
+        c_data = cur.fetchall()
+        cur.close()
 
         return c_data
 
+
+
+class AdminUniversity:
+    def __init__(self):
+       pass
+
+    def fetch_univeristy_type(self):
+        cur = conn.cursor(pymysql.cursors.DictCursor)
+        cur.execute("SELECT DISTINCT UniversityType FROM universitydata")
+        data = cur.fetchall()
+        cur.close()
+        
+        return data
+
+
+    def fetch_state(self):
+        cur = conn.cursor(pymysql.cursors.DictCursor)
+        cur.execute("SELECT DISTINCT State FROM universitydata")
+        data = cur.fetchall()
+        cur.close()
+
+        return data
+
+
+    def submit_university_data(self, name, address, state, Utype):
+        cur = conn.cursor(pymysql.cursors.DictCursor)
+        try:
+            cur.execute("INSERT INTO universitydata ( UniversityName, address, State, UniversityType, CreateDT) VALUES ( %s, %s, %s, %s, %s)", ((name, address, state, Utype, str(datetime.datetime.now()))))
+            conn.commit()
+            cur.close()
+            
+            return True
+        except:
+            return False
+
+
+    def delete_data(self, name):
+        cur = conn.cursor()
+    
+        try:
+            data = cur.execute("DELETE from universitydata WHERE UniversityName=%s", (name))
+            if data:
+                conn.commit()
+                cur.close()
+                return True
+            else:
+                return False
+            
+        except:
+            return False
+        
+    
