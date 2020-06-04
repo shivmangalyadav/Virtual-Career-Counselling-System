@@ -1,7 +1,7 @@
 """
 DAL: Database Abstraction Layer
 """
-
+from flask import session
 from .models import User
 from sqlalchemy import create_engine
 from sqlalchemy.ext.automap import automap_base
@@ -12,7 +12,6 @@ import datetime
 
 engine = create_engine(
     'mysql+pymysql://root:Shivam123@localhost:3306/virtual_counselling_system')
-
 conn = pymysql.connect(
     'localhost',
     'root',
@@ -24,6 +23,9 @@ cur = conn.cursor()
 Base = automap_base()
 Base.prepare(engine, reflect = True)
 User = Base.classes.vcadmin
+
+f = Fernet('ZmDfcTF7_60GrrY167zsiPd67pEvs0aGOv2oasOM1Pg=')
+ssn = Session(engine)
 
 def user_signup(user: User) -> bool:
     pass
@@ -112,6 +114,29 @@ class Course:
 
         return c_data
 
+
+class Admin:
+    def __init__(self):
+        pass
+
+    def admin_login(self, email, psw):
+        data = ssn.query(User).filter_by(AdminEmail = email).first()
+        if data:
+            # print(f.decrypt(data.AdminPassword.encode()).decode())
+            # print(psw)
+            if psw == f.decrypt(data.AdminPassword.encode()).decode():
+                status = True
+                session['logged_in'] = True
+                session['Adminname'] = data.AdminName
+                session['AdminEmail'] = data.AdminEmail
+                
+            else:
+                status = False
+        else:
+            status = False
+        ssn.close() 
+
+        return status  
 
 
 class AdminUniversity:
