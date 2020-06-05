@@ -1,7 +1,7 @@
 """
 DAL: Database Abstraction Layer
 """
-from flask import session
+from flask import session, jsonify
 from .models import User
 from sqlalchemy import create_engine
 from sqlalchemy.ext.automap import automap_base
@@ -189,3 +189,34 @@ class AdminUniversity:
             return False
         
     
+class Users:
+    def __init__(self):
+        self.cur = conn.cursor(pymysql.cursors.DictCursor)
+
+    def signin(self, data):
+        self.cur.execute(
+            "SELECT UserEmail, UserPassword from vcusers WHERE UserEmail=%s", (data['email'],))
+        login_data = self.cur.fetchone()
+
+        print(login_data)
+        return login_data
+
+    def signup(self, data, token):
+        try:
+            self.cur.execute("INSERT INTO vcusers (UserName, UserEmail, UserPassword)  VALUES (%s, %s, %s) ",
+                        (data['name'], data['email'], token.decode()))
+            msg = {"msg": 'Sign up successful!', 'status': True}
+        except:
+            msg = {"msg": 'email already exists.', 'status': False}
+            return msg
+        finally:
+            conn.commit()
+            # self.cur.close()
+        return msg
+
+    def profile(self, user_email):
+        self.cur.execute(
+            "SELECT UserEmail, UserName from vcusers WHERE UserEmail=%s", (user_email,))
+        user_data = self.cur.fetchone()
+
+        return user_data
