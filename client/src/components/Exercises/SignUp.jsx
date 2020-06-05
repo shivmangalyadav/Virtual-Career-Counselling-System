@@ -85,7 +85,7 @@ class SignUp extends Component {
     const isValid = this.validate()
    
     if (isValid) {
-    fetch("/signup", {
+    fetch("/user/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(this.state),

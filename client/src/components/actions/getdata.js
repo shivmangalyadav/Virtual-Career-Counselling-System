@@ -1,5 +1,5 @@
 export function getProfiledata(token_data) {
-  return fetch("/profile", {
+  return fetch("/user/profile", {
     method: "GET",
     headers: { Authorization: token_data },
   }).then((response) => {

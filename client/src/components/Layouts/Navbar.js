@@ -1,25 +1,17 @@
 import React, { Fragment, Component } from "react";
 import { AppBar, Tabs } from "@material-ui/core";
 import { Tab } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, withRouter  } from "react-router-dom";
 
 class Navbar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      login_token: ''
-    }
-  }
 
-  componentWillMount() {
-    this.setState({
-      
-      login_token:sessionStorage.getItem('access_token')
-    })
+  logOut(e) {
+    e.preventDefault()
+    sessionStorage.removeItem('access_token')
+    this.props.history.push("/signin")
   }
   
   render() {
-    const {login_token} = this.state
 
     return (
       <Fragment>
@@ -43,16 +35,16 @@ class Navbar extends Component {
               component={Link}
               to="/"
             />
-            {!login_token ?<>
+            <Tab label="Course" component={Link} to="/course" />
+
+            {!sessionStorage.getItem("access_token") ?<>
             <Tab label="Sign In" component={Link} to="/signin" />
             <Tab label="Sign up" component={Link} to="/signup" /> </>: <>
             <Tab label="Profile" component={Link} to="/profile" />
             <Tab
               style={{ float: "right" }}
               label="Logout"
-              component={Link}
-              to="/logout"
-              onChange={this.handleLogout}
+              onClick={this.logOut.bind(this)}
             /> </>}
           </Tabs>
           
@@ -63,4 +55,4 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar;
+export default withRouter(Navbar);

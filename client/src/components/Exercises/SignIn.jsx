@@ -78,7 +78,7 @@ class SignIn extends Component {
 
     if (isValid) {
       console.log("valid");
-      fetch("/signin", {
+      fetch("/user/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(this.state),
@@ -91,9 +91,9 @@ class SignIn extends Component {
           });
           console.log("okk");
           console.log(data);
-          sessionStorage.setItem("access_token", data["access_token"]);
           if (this.state.status) {
             console.log(this.state.status);
+            sessionStorage.setItem("access_token", data["access_token"]);
 
             this.props.history.push("/");
           }
