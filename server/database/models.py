@@ -100,6 +100,7 @@ class Program(Base):
 
 
 
+# # INSERT, DELETE, UPDATE Operations in stream, course, program table
 
 class course_operation:
     def __init__(self):
@@ -138,7 +139,7 @@ class course_operation:
 
         print(data)
 
-course = course_operation()
+# course = course_operation()
 # course.insert(23, "new course")  
 # course.update("23", 23)
 # course.delete(23) 
@@ -181,7 +182,7 @@ class stream_operation:
 
         print(data)
 
-stream = stream_operation()
+# stream = stream_operation()
 # stream.insert(1099, "OOO")
 # stream.update("aaaaa", 1099)
 # stream.delete(1099)
@@ -224,7 +225,7 @@ class program_operation:
 
         print(data)
 
-program = program_operation()
+# program = program_operation()
 # program.insert(2000, 12, 200)
 # program.update(1, 11, 2000)
 # program.delete(2000)
@@ -267,7 +268,7 @@ class channel_operation:
 
         print(data)
 
-channel = channel_operation()
+# channel = channel_operation()
 # channel.insert(20020, 12, 200)
 # channel.update(20020, 1221, 22000)
 # channel.delete(20020)
