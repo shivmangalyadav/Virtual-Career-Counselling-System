@@ -7,11 +7,11 @@ import pymysql
 conn = pymysql.connect(
     'localhost',
     'root',
-    'Shivam123',
+    'Lu9616@cky',
     'virtual_counselling_system'
 )
 
-engine = create_engine('mysql+pymysql://root:Shivam123@localhost:3306/vccs', echo=True)
+engine = create_engine('mysql+pymysql://root:Lu9616@cky@localhost:3306/vccs', echo=True)
 Base = declarative_base()
 session = sessionmaker(bind=engine)()
 
@@ -109,10 +109,10 @@ class course_operation:
     def insert(self, c_id, c_name):
         sql = """ INSERT INTO courses VALUES( %s, %s ) """
         self.cur.execute( sql, (c_id, c_name) )
-        print(self.cur.rowcount , " row added.")
+        print(self.cur.rowcount , "row added.")
         conn.commit()
 
-        self.cur.execute( """ SELECT * FROM courses """ )
+        self.cur.execute( """SELECT * FROM courses""" )
         data = self.cur.fetchall()
 
         print( data )
@@ -120,7 +120,7 @@ class course_operation:
     def update(self, c_name, c_id):
         sql = """ UPDATE courses SET CourseName = %s WHERE CourseId = %s"""
         self.cur.execute(sql, (c_name, c_id))
-        print(self.cur.rowcount , " row updated.")
+        print(self.cur.rowcount , "row updated.")
         conn.commit()
 
         self.cur.execute( """ SELECT * FROM courses """ )
@@ -131,7 +131,7 @@ class course_operation:
     def delete(self, c_id):
         sql = """ DELETE FROM courses WHERE CourseID = %s """
         self.cur.execute(sql, c_id)
-        print(self.cur.rowcount , " row deleted.")
+        print(self.cur.rowcount , "row deleted.")
         conn.commit()
 
         self.cur.execute(""" SELECT * FROM courses """)
@@ -152,7 +152,7 @@ class stream_operation:
     def insert(self, s_id, s_name):
         sql = """ INSERT INTO streams VALUES( %s, %s ) """
         self.cur.execute( sql, (s_id, s_name) )
-        print(self.cur.rowcount , " row added.")
+        print(self.cur.rowcount , "row added.")
         conn.commit()
 
         self.cur.execute( """ SELECT * FROM streams """ )
@@ -163,7 +163,7 @@ class stream_operation:
     def update(self, s_name, s_id ):
         sql = """ UPDATE streams SET StreamName = %s WHERE StreamID = %s"""
         self.cur.execute(sql, (s_name, s_id))
-        print(self.cur.rowcount , " row updated.")
+        print(self.cur.rowcount , "row updated.")
         conn.commit()
 
         self.cur.execute( """ SELECT * FROM streams """ )
@@ -174,10 +174,10 @@ class stream_operation:
     def delete(self, s_id):
         sql = """ DELETE FROM streams WHERE StreamID = %s """
         self.cur.execute(sql, s_id)
-        print(self.cur.rowcount , " row deleted.")
+        print(self.cur.rowcount , "row deleted.")
         conn.commit()
 
-        self.cur.execute(""" SELECT * FROM streams """)
+        self.cur.execute("""SELECT * FROM streams """)
         data = self.cur.fetchall()
 
         print(data)
@@ -198,7 +198,7 @@ class program_operation:
         print(self.cur.rowcount , " row added.")
         conn.commit()
 
-        self.cur.execute( """ SELECT * FROM programs """ )
+        self.cur.execute( """SELECT * FROM programs """ )
         data = self.cur.fetchall()
 
         print( data )
@@ -241,7 +241,7 @@ class channel_operation:
         print(self.cur.rowcount , " row added.")
         conn.commit()
 
-        self.cur.execute( """ SELECT * FROM channel """ )
+        self.cur.execute( """SELECT * FROM channel """ )
         data = self.cur.fetchall()
 
         print( data )

@@ -4,7 +4,7 @@ import datetime
 conn = pymysql.connect(
     'localhost',
     'root',
-    'Shivam123',
+    'Lu9616@cky',
     'virtual_counselling_system'
 )
 

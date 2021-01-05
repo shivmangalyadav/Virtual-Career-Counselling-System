@@ -11,11 +11,11 @@ import pymysql
 import datetime
 
 engine = create_engine(
-    'mysql+pymysql://root:Shivam123@localhost:3306/virtual_counselling_system')
+    'mysql+pymysql://root:Lu9616@cky@localhost:3306/virtual_counselling_system')
 conn = pymysql.connect(
     'localhost',
     'root',
-    'Shivam123',
+    'Lu9616@cky',
     'virtual_counselling_system'
 )
 cur = conn.cursor()
@@ -169,7 +169,7 @@ class AdminUniversity:
             cur.close()
             
             return True
-        except:
+        except e:
             return False
 
 
@@ -185,7 +185,7 @@ class AdminUniversity:
             else:
                 return False
             
-        except:
+        except e:
             return False
         
     
@@ -206,7 +206,7 @@ class Users:
             self.cur.execute("INSERT INTO vcusers (UserName, UserEmail, UserPassword)  VALUES (%s, %s, %s) ",
                         (data['name'], data['email'], token.decode()))
             msg = {"msg": 'Sign up successful!', 'status': True}
-        except:
+        except e:
             msg = {"msg": 'email already exists.', 'status': False}
             return msg
         finally:
